@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#f7f7f4" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="description" content="Decode QR codes from an image privately in your browser. Preview, copy, and safely inspect QR contents." />
+  <title>Decode QR Code — CuteQR</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%236554c0'/%3E%3Crect x='20' y='20' width='25' height='25' fill='%23fff'/%3E%3Crect x='55' y='20' width='25' height='25' fill='%23fff'/%3E%3Crect x='20' y='55' width='25' height='25' fill='%23fff'/%3E%3Crect x='55' y='55' width='15' height='15' fill='%23fff'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js" defer></script>
+</head>
+<body>
+
+  <a href="#decodeMain" class="skip-link">Skip to decoder</a>
+
+  <header class="legal-site-header">
+    <div class="container-cute legal-nav">
+      <a href="index.html" class="legal-brand" aria-label="CuteQR home">
+        <span class="legal-brand-mark" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="3" height="3" rx="0.5"/><rect x="18" y="18" width="3" height="3" rx="0.5"/></svg>
+        </span>
+        CuteQR
+      </a>
+      <nav class="legal-nav-links" aria-label="Primary">
+        <a href="index.html#generator">Create QR</a>
+        <a href="decode.html" aria-current="page">Decode</a>
+        <a href="index.html#features">Features</a>
+        <a href="privacy-policy.html">Privacy</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="decodeMain" class="decode-main">
+    <div class="decode-hero">
+      <span class="soft-badge">Private · Browser-based</span>
+      <h1>Decode any QR image</h1>
+      <p>Upload a screenshot, photo, or downloaded image to read its contents.</p>
+    </div>
+
+    <section class="decode-panel" aria-labelledby="upload-title">
+      <h2 id="upload-title">Upload your QR code</h2>
+      <p class="decode-subtitle">PNG, JPEG, WebP and other browser-readable images. Max 20 MB. Sharp images with the full QR border decode best.</p>
+
+      <input id="qrFile" type="file" accept="image/*" hidden />
+
+      <div id="dropZone" class="decode-drop" role="button" tabindex="0" aria-label="Choose or drop a QR image">
+        <div class="decode-drop-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        </div>
+        <strong>Choose an image or drag it here</strong>
+        <span>You can also paste an image from your clipboard</span>
+      </div>
+
+      <div id="status" class="decode-status" role="status" aria-live="polite">Ready...</div>
+
+      <div id="previewWrap" class="decode-file-row" style="display: none;">
+        <img id="preview" class="decode-preview-img" alt="Selected QR image preview" />
+        <div class="decode-file-info">
+          <div id="fileName" class="decode-file-name"></div>
+          <div id="imageInfo" class="decode-meta"></div>
+          <button id="tryAgain" class="btn-cute btn-ghost-cute" type="button"
+                  style="margin-top:10px;min-height:40px;padding:8px 14px;font-size:0.8125rem;">
+            Choose another image
+          </button>
+        </div>
+      </div>
+
+      <div id="result" class="decode-result" aria-live="polite">
+        <div class="decode-result-head">
+          <h2>Decoded result</h2>
+          <span id="resultType" class="soft-badge">QR content</span>
+        </div>
+        <textarea id="decodedText" class="decode-field" readonly spellcheck="false" aria-label="Decoded QR text"></textarea>
+        <div class="decode-actions">
+          <button id="copyBtn" class="btn-cute btn-primary-cute" type="button">Copy text</button>
+          <button id="downloadBtn" class="btn-cute btn-secondary-cute" type="button">Download TXT</button>
+          <button id="openLinkBtn" class="btn-cute btn-ghost-cute" type="button" hidden>Open link safely</button>
+          <button id="decodeAgainBtn" class="btn-cute btn-ghost-cute" type="button">Decode another</button>
+        </div>
+        <p id="linkWarning" class="decode-status warning" style="display:none;">
+          Check the destination carefully before opening. QR codes can contain phishing links.
+          CuteQR never opens a link automatically.
+        </p>
+      </div>
+
+      <div class="decode-security-note">
+        <strong>Security note:</strong> Decoding only reveals the QR data — it does not verify that the
+        content is trustworthy. Never enter passwords or payment details on a site just because a
+        QR code points there.
+      </div>
+    </section>
+
+    <section class="decode-tips" aria-label="About decoding">
+      <div class="decode-tip">
+        <strong>🔒 Private by design</strong>
+        Image processing happens in your browser. No upload, no account, no decoder API.
+      </div>
+      <div class="decode-tip">
+        <strong>🧩 Recovery attempts</strong>
+        Retries with resized, grayscale, contrast-adjusted, and rotated variants when needed.
+      </div>
+      <div class="decode-tip">
+        <strong>⚠️ Styled QR limits</strong>
+        Illustrated, logo-covered, low-contrast, or damaged codes may not decode. No decoder is perfect.
+      </div>
+    </section>
+  </main>
+
+  <footer style="border-top:1px solid var(--border);background:#fff;">
+    <div class="container-cute" style="padding:22px 16px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;color:var(--ink-mute);font-size:0.8125rem;">
+      <span>© 2026 CuteQR</span>
+      <span>
+        <a href="index.html" style="color:inherit;">Create QR</a> ·
+        <a href="privacy-policy.html" style="color:inherit;">Privacy</a> ·
+        <a href="terms.html" style="color:inherit;">Terms</a>
+      </span>
+    </div>
+  </footer>
+
+  <script>
+  (() => {
+    'use strict';
+
+    const MAX_BYTES  = 20 * 1024 * 1024;
+    const MAX_DIM    = 2200;
+    const MAX_PIXELS = 40000000;
+
+    const fileInput      = document.getElementById('qrFile');
+    const dropZone       = document.getElementById('dropZone');
+    const statusBox      = document.getElementById('status');
+    const previewWrap    = document.getElementById('previewWrap');
+    const preview        = document.getElementById('preview');
+    const fileName       = document.getElementById('fileName');
+    const imageInfo      = document.getElementById('imageInfo');
+    const resultBox      = document.getElementById('result');
+    const output         = document.getElementById('decodedText');
+    const resultType     = document.getElementById('resultType');
+    const copyBtn        = document.getElementById('copyBtn');
+    const downloadBtn    = document.getElementById('downloadBtn');
+    const openLinkBtn    = document.getElementById('openLinkBtn');
+    const linkWarning    = document.getElementById('linkWarning');
+    const tryAgainBtn    = document.getElementById('tryAgain');
+    const decodeAgainBtn = document.getElementById('decodeAgainBtn');
+
+    let currentObjectUrl = null;
+    let lastText         = '';
+    let processingToken  = 0;  // guards against overlapping file picks
+
+    function status(message, kind) {
+      statusBox.textContent = message;
+      statusBox.className = 'decode-status' + (kind ? ' ' + kind : '');
+    }
+
+    function chooseFile() { fileInput.click(); }
+
+    dropZone.addEventListener('click', chooseFile);
+    dropZone.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); chooseFile(); }
+    });
+    tryAgainBtn.addEventListener('click', chooseFile);
+    decodeAgainBtn.addEventListener('click', reset);
+
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files && fileInput.files[0]) processFile(fileInput.files[0]);
+      fileInput.value = '';
+    });
+
+    ['dragenter','dragover'].forEach((n) =>
+      dropZone.addEventListener(n, (e) => {
+        e.preventDefault();
+        dropZone.classList.add('dragover');
+      })
+    );
+    ['dragleave','drop'].forEach((n) =>
+      dropZone.addEventListener(n, (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+      })
+    );
+    dropZone.addEventListener('drop', (e) => {
+      const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+      if (f) processFile(f);
+    });
+
+    document.addEventListener('paste', (e) => {
+      const items = e.clipboardData && e.clipboardData.items;
+      if (!items) return;
+      for (const item of items) {
+        if (item.type && item.type.startsWith('image/')) {
+          const f = item.getAsFile();
+          if (f) { processFile(f); e.preventDefault(); return; }
+        }
+      }
+    });
+
+    function reset() {
+      if (currentObjectUrl) {
+        URL.revokeObjectURL(currentObjectUrl);
+        currentObjectUrl = null;
+      }
+      resultBox.classList.remove('visible');
+      previewWrap.style.display = 'none';
+      preview.removeAttribute('src');
+      output.value = '';
+      lastText = '';
+      openLinkBtn.hidden = true;
+      linkWarning.style.display = 'none';
+      status('Ready. Your image is decoded locally and never uploaded.');
+    }
+
+    function isImage(file) {
+      if (!file) return false;
+      if (/\.svgz?$/i.test(file.name) || file.type === 'image/svg+xml') return false;
+      if (file.type.startsWith('image/') && !file.type.includes('svg')) return true;
+      return /\.(png|jpe?g|webp|gif|bmp|avif)$/i.test(file.name);
+    }
+
+    function loadImage(file) {
+      return new Promise((resolve, reject) => {
+        const url = URL.createObjectURL(file);
+        const img = new Image();
+        img.onload  = () => resolve({ img, url });
+        img.onerror = () => {
+          URL.revokeObjectURL(url);
+          reject(new Error('This image could not be opened by your browser. Try PNG or JPEG.'));
+        };
+        img.src = url;
+      });
+    }
+
+    function canvasFor(img, maxDim = MAX_DIM, rotate = 0, mode = 'color') {
+      const scale = Math.min(1, maxDim / Math.max(img.naturalWidth, img.naturalHeight));
+      const w = Math.max(1, Math.round(img.naturalWidth  * scale));
+      const h = Math.max(1, Math.round(img.naturalHeight * scale));
+      const swap = Math.abs(rotate) % 180 === 90;
+
+      const canvas = document.createElement('canvas');
+      canvas.width  = swap ? h : w;
+      canvas.height = swap ? w : h;
+
+      const ctx = canvas.getContext('2d', { willReadFrequently: true });
+      if (!ctx) throw new Error('This browser cannot process the image.');
+
+      ctx.save();
+      ctx.translate(canvas.width / 2, canvas.height / 2);
+      ctx.rotate(rotate * Math.PI / 180);
+      ctx.drawImage(img, -w / 2, -h / 2, w, h);
+      ctx.restore();
+
+      if (mode !== 'color') {
+        const data = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const d = data.data;
+        for (let i = 0; i < d.length; i += 4) {
+          let y = 0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2];
+          if (mode === 'contrast')  y = Math.max(0, Math.min(255, (y - 128) * 1.55 + 128));
+          if (mode === 'threshold') y = y > 150 ? 255 : 0;
+          d[i] = d[i + 1] = d[i + 2] = y;
+        }
+        ctx.putImageData(data, 0, 0);
+      }
+      return canvas;
+    }
+
+    function decodeWithJsQR(canvas) {
+      if (typeof window.jsQR !== 'function') return null;
+      const ctx = canvas.getContext('2d', { willReadFrequently: true });
+      const data = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const code = window.jsQR(data.data, data.width, data.height, { inversionAttempts: 'attemptBoth' });
+      return code && code.data ? code.data : null;
+    }
+
+    async function decodeImage(img) {
+      // 1) Try native BarcodeDetector when available
+      if ('BarcodeDetector' in window) {
+        try {
+          const detector = new BarcodeDetector({ formats: ['qr_code'] });
+          const found = await detector.detect(img);
+          if (found && found.length && found[0].rawValue) return found[0].rawValue;
+        } catch (_) { /* fall through */ }
+      }
+      // 2) jsQR with multiple preprocessing variants
+      if (typeof window.jsQR !== 'function') {
+        throw new Error('The QR decoder library did not load. Check your connection and reload this page.');
+      }
+      const attempts = [];
+      [0, 90, 180, 270].forEach((angle) => {
+        attempts.push([angle, 'color']);
+        attempts.push([angle, 'gray']);
+        attempts.push([angle, 'contrast']);
+        attempts.push([angle, 'threshold']);
+      });
+      for (const [angle, mode] of attempts) {
+        try {
+          const canvas = canvasFor(img, MAX_DIM, angle, mode);
+          const text = decodeWithJsQR(canvas);
+          if (text) return text;
+        } catch (_) { /* next variant */ }
+      }
+      return null;
+    }
+
+    function classify(text) {
+      if (/^https?:\/\//i.test(text))                          return 'Web link';
+      if (/^WIFI:/i.test(text))                                return 'Wi-Fi';
+      if (/^BEGIN:VCARD/i.test(text) || /^MECARD:/i.test(text)) return 'Contact';
+      if (/^mailto:/i.test(text))                              return 'Email';
+      if (/^tel:/i.test(text))                                 return 'Phone';
+      if (/^sms:/i.test(text))                                 return 'SMS';
+      if (/^geo:/i.test(text))                                 return 'Location';
+      return 'Text';
+    }
+
+    function safeHttpUrl(text) {
+      try {
+        const u = new URL(text);
+        return (u.protocol === 'https:' || u.protocol === 'http:') ? u.href : null;
+      } catch (_) { return null; }
+    }
+
+    async function processFile(file) {
+      const myToken = ++processingToken;
+      reset();
+
+      if (!isImage(file)) {
+        status('Please choose an image file (PNG, JPEG, WebP, GIF, BMP, AVIF).', 'error');
+        return;
+      }
+      if (file.size === 0) {
+        status('This file is empty. Please choose another image.', 'error');
+        return;
+      }
+      if (file.size > MAX_BYTES) {
+        status('This image is larger than 20 MB. Please choose a smaller image.', 'error');
+        return;
+      }
+
+      status('Loading image safely in your browser…');
+
+      let loaded;
+      try {
+        loaded = await loadImage(file);
+      } catch (err) {
+        if (myToken !== processingToken) return;
+        status(err.message || 'Unable to read this image.', 'error');
+        return;
+      }
+
+      if (myToken !== processingToken) {
+        // A newer file was picked while we were loading — drop this one.
+        URL.revokeObjectURL(loaded.url);
+        return;
+      }
+
+      if (currentObjectUrl) URL.revokeObjectURL(currentObjectUrl);
+      currentObjectUrl = loaded.url;
+      const img = loaded.img;
+
+      if (!img.naturalWidth || !img.naturalHeight) {
+        status('The image has invalid dimensions.', 'error');
+        return;
+      }
+      if (img.naturalWidth * img.naturalHeight > MAX_PIXELS) {
+        status('This image has too many pixels to process safely. Please resize it and try again.', 'error');
+        return;
+      }
+
+      preview.src = currentObjectUrl;
+      previewWrap.style.display = 'flex';
+      fileName.textContent = file.name || 'Pasted image';
+      imageInfo.textContent =
+        img.naturalWidth + ' × ' + img.naturalHeight + ' px · ' +
+        Math.ceil(file.size / 1024) + ' KB';
+
+      status('Trying multiple QR detection and image-recovery methods…');
+
+      try {
+        const text = await decodeImage(img);
+        if (myToken !== processingToken) return;
+        if (!text) {
+          status(
+            'No readable QR code found. Try a sharper, larger image with better contrast and the full QR border visible.',
+            'error'
+          );
+          return;
+        }
+        lastText = text;
+        output.value = text;
+        resultType.textContent = classify(text);
+        resultBox.classList.add('visible');
+
+        const url = safeHttpUrl(text);
+        openLinkBtn.hidden = !url;
+        linkWarning.style.display = url ? 'block' : 'none';
+        status('QR code decoded successfully. Review the content before using it.', 'success');
+        resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      } catch (err) {
+        if (myToken !== processingToken) return;
+        status(err.message || 'Decoding failed. Please try another image.', 'error');
+      }
+    }
+
+    /* ---------- actions ---------- */
+    copyBtn.addEventListener('click', async () => {
+      if (!lastText) return;
+      try {
+        await navigator.clipboard.writeText(lastText);
+        status('Decoded text copied to clipboard.', 'success');
+      } catch (_) {
+        output.focus();
+        output.select();
+        try {
+          const ok = document.execCommand('copy');
+          status(ok ? 'Decoded text copied to clipboard.'
+                    : 'Select the text above and copy it manually.',
+                 ok ? 'success' : '');
+        } catch (__) {
+          status('Select the text above and copy it manually.');
+        }
+      }
+    });
+
+    downloadBtn.addEventListener('click', () => {
+      if (!lastText) return;
+      const blob = new Blob([lastText], { type: 'text/plain;charset=utf-8' });
+      const url  = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'cuteqr-decoded.txt';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    });
+
+    openLinkBtn.addEventListener('click', () => {
+      const url = safeHttpUrl(lastText);
+      if (!url) return;
+      // User-gesture click on a real anchor. `noopener noreferrer`
+      // prevents tab-nabbing and hides the referrer to the destination.
+      const a = document.createElement('a');
+      a.href = url;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    });
+
+    window.addEventListener('beforeunload', () => {
+      if (currentObjectUrl) URL.revokeObjectURL(currentObjectUrl);
+    });
+  })();
+  </script>
+</body>
+</html>

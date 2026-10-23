@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#f7f7f4" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta name="description" content="Create beautiful, customizable QR codes for links, text, Wi-Fi, email, and phone numbers. Free, privacy-friendly, and instant." />
+  <title>CuteQR — Free Custom QR Code Generator</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%236554c0'/%3E%3Crect x='20' y='20' width='25' height='25' fill='%23fff'/%3E%3Crect x='55' y='20' width='25' height='25' fill='%23fff'/%3E%3Crect x='20' y='55' width='25' height='25' fill='%23fff'/%3E%3Crect x='55' y='55' width='15' height='15' fill='%23fff'/%3E%3C/svg%3E" />
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4" defer></script>
+  <script src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js" defer></script>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+
+  <a href="#generator" class="skip-link">Skip to generator</a>
+
+  <!-- Navigation -->
+  <nav class="sticky top-0 z-50" style="background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border);">
+    <div class="container-cute flex items-center justify-between" style="min-height: 64px;">
+      <a href="#" class="flex items-center gap-2.5 no-underline" aria-label="CuteQR home">
+        <span class="inline-flex items-center justify-center w-9 h-9 rounded-xl" style="background: var(--accent-soft);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6554c0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="3" height="3" rx="0.5"/><rect x="18" y="18" width="3" height="3" rx="0.5"/></svg>
+        </span>
+        <span class="text-lg font-bold tracking-tight" style="color: var(--ink);">CuteQR</span>
+      </a>
+
+      <div class="hidden md:flex items-center gap-1">
+        <a href="#generator" class="px-4 py-2 rounded-xl text-sm font-medium no-underline" style="color: var(--ink-soft); transition: background 0.2s, color 0.2s;" onmouseover="this.style.background='var(--accent-soft)';this.style.color='var(--accent-hover)'" onmouseout="this.style.background='transparent';this.style.color='var(--ink-soft)'">Home</a>
+        <a href="#features" class="px-4 py-2 rounded-xl text-sm font-medium no-underline" style="color: var(--ink-soft); transition: background 0.2s, color 0.2s;" onmouseover="this.style.background='var(--accent-soft)';this.style.color='var(--accent-hover)'" onmouseout="this.style.background='transparent';this.style.color='var(--ink-soft)'">Features</a>
+        <a href="decode.html" class="px-4 py-2 rounded-xl text-sm font-medium no-underline" style="color: var(--ink-soft);">Decode QR</a>
+        <a href="#how-to" class="px-4 py-2 rounded-xl text-sm font-medium no-underline" style="color: var(--ink-soft); transition: background 0.2s, color 0.2s;" onmouseover="this.style.background='var(--accent-soft)';this.style.color='var(--accent-hover)'" onmouseout="this.style.background='transparent';this.style.color='var(--ink-soft)'">Guide</a>
+        <a href="privacy-policy.html" class="px-4 py-2 rounded-xl text-sm font-medium no-underline" style="color: var(--ink-soft); transition: background 0.2s, color 0.2s;" onmouseover="this.style.background='var(--accent-soft)';this.style.color='var(--accent-hover)'" onmouseout="this.style.background='transparent';this.style.color='var(--ink-soft)'">Policies</a>
+      </div>
+
+      <div class="hidden md:flex items-center gap-3">
+        <span class="soft-badge">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l2.5 7.5H22l-6.2 4.5 2.4 7.5L12 17l-6.2 4.5 2.4-7.5L2 9.5h7.5z"/></svg>
+          Free forever
+        </span>
+      </div>
+
+      <button id="mobileMenuBtn" class="md:hidden inline-flex items-center justify-center w-11 h-11 rounded-xl" style="background: var(--accent-soft);" aria-label="Open menu" aria-expanded="false">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5545ad" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div id="mobileMenu" class="mobile-menu">
+      <a href="#generator">Home</a>
+      <a href="#features">Features</a>
+      <a href="decode.html">Decode QR</a>
+      <a href="#how-to">Guide</a>
+      <a href="privacy-policy.html">Policies</a>
+      <span class="soft-badge self-start mt-2">Free forever</span>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="relative overflow-hidden">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="container-cute py-10 sm:py-14 lg:py-20">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+        <div class="text-center lg:text-left">
+          <span class="soft-badge mb-5 inline-flex" style="font-size:0.72rem;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+            100% Free · No Sign-up · Privacy First
+          </span>
+          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-tight" style="color: var(--ink); max-width: 560px;">
+            Beautiful QR codes,
+            <span style="color: var(--accent);">made in seconds.</span>
+          </h1>
+          <p class="mt-4 text-base sm:text-lg leading-relaxed" style="color: var(--ink-soft); max-width: 480px; margin-left: auto; margin-right: auto;">
+            Simple and fast — create beautiful, scannable QR codes in seconds.
+          </p>
+          <div class="hero-cta mt-7 flex flex-wrap items-center justify-center lg:justify-start gap-3">
+            <a href="#generator" class="btn-cute btn-primary-cute" style="padding: 14px 30px; font-size: 1rem;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="3" height="3" rx="0.5"/><rect x="18" y="18" width="3" height="3" rx="0.5"/></svg>
+              Create QR Code
+            </a>
+            <a href="decode.html" class="btn-cute btn-ghost-cute" style="padding: 14px 24px; font-size: 1rem;">Decode QR</a>
+            <a href="#features" class="btn-cute btn-ghost-cute" style="padding: 14px 24px; font-size: 1rem;">See features</a>
+          </div>
+          <div class="mt-6 flex flex-wrap items-center justify-center lg:justify-start gap-x-5 gap-y-2 text-xs" style="color: var(--ink-mute);">
+            <span class="flex items-center gap-1.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> No account needed</span>
+            <span class="flex items-center gap-1.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> QR data stays in your browser</span>
+            <span class="flex items-center gap-1.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> High-res exports</span>
+          </div>
+        </div>
+        <div class="hero-visual" id="heroVisual" aria-hidden="true">
+          <div class="hero-qr hero-qr-main" id="heroQrMain"></div>
+          <div class="hero-qr hero-qr-a" id="heroQrA"></div>
+          <div class="hero-qr hero-qr-b" id="heroQrB"></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- QR Studio -->
+  <section id="generator" class="container-cute studio-shell py-6 sm:py-10">
+    <div class="mb-7 sm:mb-9">
+      <p class="studio-kicker">Creative QR Studio</p>
+      <h2 class="studio-title mt-2 text-2xl sm:text-3xl font-bold" style="color: var(--ink);">Make a QR code that feels like yours.</h2>
+      <p class="mt-2 text-sm sm:text-base" style="color: var(--ink-soft);">Add content, generate, then customize the design to match your style.</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-8">
+
+      <!-- LEFT -->
+      <div class="lg:col-span-3 space-y-5">
+
+        <!-- Content type -->
+        <div class="cute-card p-4 sm:p-5">
+          <div class="flex items-baseline justify-between mb-1">
+            <label class="cute-label" style="font-size:0.875rem;font-weight:600;color:var(--ink);margin-bottom:0;">QR content type</label>
+            <span class="text-xs" style="color: var(--ink-mute);">Pick one</span>
+          </div>
+          <div class="content-type-tabs" role="radiogroup" aria-label="QR content type">
+            <label class="content-tab">
+              <input type="radio" name="contentType" value="url" checked>
+              <span class="content-tab-inner">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a5 5 0 0 1 0-7l1-1a5 5 0 0 1 7 7l-1 1"/><path d="M14 10a5 5 0 0 1 0 7l-1 1a5 5 0 0 1-7-7l1-1"/></svg>
+                <span>URL</span>
+              </span>
+            </label>
+            <label class="content-tab">
+              <input type="radio" name="contentType" value="phone">
+              <span class="content-tab-inner">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <span>Phone</span>
+              </span>
+            </label>
+            <label class="content-tab">
+              <input type="radio" name="contentType" value="text">
+              <span class="content-tab-inner">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                <span>Text</span>
+              </span>
+            </label>
+            <label class="content-tab">
+              <input type="radio" name="contentType" value="email">
+              <span class="content-tab-inner">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg>
+                <span>Email</span>
+              </span>
+            </label>
+            <label class="content-tab">
+              <input type="radio" name="contentType" value="wifi">
+              <span class="content-tab-inner">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+                <span>Wi-Fi</span>
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Input fields -->
+        <div class="cute-card p-4 sm:p-5">
+          <div class="input-group" data-group="url">
+            <label for="inputUrl" class="cute-label">Website URL</label>
+            <input type="url" id="inputUrl" class="cute-input break-anywhere" placeholder="https://example.com" autocomplete="off" spellcheck="false" />
+            <p class="error-msg" id="errorUrl" role="alert"></p>
+          </div>
+
+          <div class="input-group hidden" data-group="phone">
+            <label for="inputPhone" class="cute-label">Phone Number</label>
+            <input type="tel" id="inputPhone" class="cute-input" placeholder="+1 555 123 4567" autocomplete="off" />
+            <p class="error-msg" id="errorPhone" role="alert"></p>
+          </div>
+
+          <div class="input-group hidden" data-group="text">
+            <div class="flex items-baseline justify-between">
+              <label for="inputText" class="cute-label">Message</label>
+              <span id="textCounter" class="text-xs" style="color: var(--ink-mute); font-variant-numeric: tabular-nums;">0 / 150</span>
+            </div>
+            <textarea id="inputText" class="cute-input break-anywhere" rows="3" maxlength="150" placeholder="Type any text or short message…" style="resize: vertical; min-height: 88px;"></textarea>
+            <p class="error-msg" id="errorText" role="alert"></p>
+          </div>
+
+          <div class="input-group hidden" data-group="email">
+            <label for="inputEmail" class="cute-label">Email Address</label>
+            <input type="email" id="inputEmail" class="cute-input break-anywhere" placeholder="hello@example.com" autocomplete="off" />
+            <p class="error-msg" id="errorEmail" role="alert"></p>
+            <div class="mt-3">
+              <label for="inputEmailSubject" class="cute-label">Subject <span style="font-weight:400;opacity:0.6;">(optional)</span></label>
+              <input type="text" id="inputEmailSubject" class="cute-input break-anywhere" placeholder="Hello!" autocomplete="off" />
+            </div>
+            <div class="mt-3">
+              <label for="inputEmailBody" class="cute-label">Body <span style="font-weight:400;opacity:0.6;">(optional)</span></label>
+              <textarea id="inputEmailBody" class="cute-input break-anywhere" rows="2" placeholder="Your message…" style="resize: vertical; min-height: 64px;"></textarea>
+            </div>
+          </div>
+
+          <div class="input-group hidden" data-group="wifi">
+            <label for="inputWifiSsid" class="cute-label">Network Name (SSID)</label>
+            <input type="text" id="inputWifiSsid" class="cute-input break-anywhere" placeholder="MyWiFi" autocomplete="off" />
+            <p class="error-msg" id="errorWifiSsid" role="alert"></p>
+            <div class="mt-3">
+              <label for="inputWifiPassword" class="cute-label">Password</label>
+              <input type="text" id="inputWifiPassword" class="cute-input break-anywhere" placeholder="Enter password" autocomplete="off" />
+              <p class="error-msg" id="errorWifiPassword" role="alert"></p>
+            </div>
+            <div class="mt-3">
+              <label for="selectWifiSecurity" class="cute-label">Security Type</label>
+              <select id="selectWifiSecurity" class="cute-select">
+                <option value="WPA">WPA / WPA2</option>
+                <option value="WEP">WEP</option>
+                <option value="nopass">Open (No password)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap gap-3 mt-5">
+            <button id="btnGenerate" class="btn-cute btn-primary-cute flex-1 sm:flex-none" style="min-width: 160px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2L14.5 9.5 22 12 14.5 14.5 12 22 9.5 14.5 2 12 9.5 9.5Z"/></svg>
+              Generate QR
+            </button>
+            <button id="btnClear" class="btn-cute btn-ghost-cute flex-1 sm:flex-none">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+              Clear
+            </button>
+          </div>
+
+          <!-- Advanced customize dropdown -->
+          <details id="advancedCustomize" class="advanced-customize">
+            <summary>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6554c0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+              Customize design
+              <span class="summary-hint">Colors, illustrations, size</span>
+            </summary>
+
+            <div class="mt-4">
+              <div class="studio-select-grid">
+                <div class="studio-control">
+                  <label for="selectDesignStyle" class="cute-label">Design style</label>
+                  <select id="selectDesignStyle" class="cute-select">
+                    <option value="classic">Classic</option>
+                    <option value="rounded">Rounded</option>
+                    <option value="dots">Dots</option>
+                    <option value="creative">Creative Themes</option>
+                  </select>
+                </div>
+                <div class="studio-control">
+                  <label for="selectColorTheme" class="cute-label">Color theme</label>
+                  <select id="selectColorTheme" class="cute-select">
+                    <option value="bw">Black &amp; White</option>
+                    <option value="pastel">Pastel</option>
+                    <option value="lavender">Lavender</option>
+                    <option value="ocean">Ocean</option>
+                    <option value="forest">Forest</option>
+                    <option value="sunset">Sunset</option>
+                    <option value="custom">Custom Colors</option>
+                  </select>
+                </div>
+                <div class="studio-control">
+                  <label for="selectSize" class="cute-label">Export size</label>
+                  <select id="selectSize" class="cute-select">
+                    <option value="512">Standard · 512 px</option>
+                    <option value="1024">HD · 1024 px</option>
+                    <option value="2048">Print quality · 2048 px</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="studio-divider"></div>
+
+              <div id="creativeStudio">
+                <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
+                  <div>
+                    <h3 class="text-sm font-semibold" style="color: var(--ink);">Center illustration</h3>
+                    <p class="text-xs mt-1" style="color: var(--ink-mute);">Click to add; click again to remove. The encoded data stays the same.</p>
+                  </div>
+                  <div class="studio-control" style="width:min(100%,200px);">
+                    <label for="selectThemeCategory" class="cute-label">Collection</label>
+                    <select id="selectThemeCategory" class="cute-select">
+                      <option>Animals</option>
+                      <option>Fruits</option>
+                      <option>Flowers</option>
+                      <option>Nature</option>
+                      <option>Minimal</option>
+                      <option>Cute &amp; Pastel</option>
+                    </select>
+                  </div>
+                </div>
+                <div id="themeScroll" class="theme-scroll" role="group" aria-label="Choose a center illustration"></div>
+                <p class="mt-1 text-xs" style="color: var(--ink-mute);">Center art uses high error correction. Scan-test themed codes before printing or sharing.</p>
+              </div>
+
+              <details id="customColorDetails" class="custom-colors">
+                <summary>Fine-tune foreground &amp; background colors</summary>
+                <div class="grid grid-cols-2 gap-3 mt-3">
+                  <div>
+                    <label for="colorForeground" class="cute-label">Foreground</label>
+                    <div class="color-swatch"><input type="color" id="colorForeground" value="#17181d" aria-label="Foreground color" /></div>
+                  </div>
+                  <div>
+                    <label for="colorBackground" class="cute-label">Background</label>
+                    <div class="color-swatch"><input type="color" id="colorBackground" value="#ffffff" aria-label="Background color" /></div>
+                  </div>
+                </div>
+              </details>
+
+              <details id="advancedSettings" class="advanced-customize" style="margin-top: 8px; border-top: 0; padding-top: 0;">
+                <summary style="font-size: 0.82rem;">Advanced settings <span class="summary-hint">error correction, quiet zone, module style, logo</span></summary>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
+                  <div>
+                    <label for="selectEcc" class="cute-label">Error correction</label>
+                    <select id="selectEcc" class="cute-select">
+                      <option value="L">L — Low</option>
+                      <option value="M">M — Medium</option>
+                      <option value="Q">Q — Quartile</option>
+                      <option value="H" selected>H — High</option>
+                    </select>
+                    <p class="text-xs mt-1 hidden" id="eccNote" style="color: var(--warning);">High error correction is required when using center art or a logo.</p>
+                  </div>
+                  <div>
+                    <label for="selectQuietZone" class="cute-label">Quiet zone / margin</label>
+                    <select id="selectQuietZone" class="cute-select">
+                      <option value="standard">Standard</option>
+                      <option value="generous">Generous</option>
+                      <option value="print">Print-safe</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="selectDotStyle" class="cute-label">Module style</label>
+                    <select id="selectDotStyle" class="cute-select">
+                      <option value="square">Square</option>
+                      <option value="rounded">Rounded</option>
+                      <option value="dots">Dots</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="selectCornerStyle" class="cute-label">Corner style</label>
+                    <select id="selectCornerStyle" class="cute-select">
+                      <option value="square">Square</option>
+                      <option value="extra-rounded">Rounded</option>
+                      <option value="dot">Dot</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="mt-4">
+                  <label for="inputLogo" class="cute-label">Center logo <span style="font-weight:400;color:var(--ink-mute);">(optional; overrides illustration)</span></label>
+                  <input type="file" id="inputLogo" accept="image/png,image/jpeg,image/svg+xml,image/webp" class="cute-input" style="padding:8px 12px;font-size:0.8125rem;" />
+                  <p class="text-xs mt-1" style="color: var(--ink-mute);">A logo can reduce scan reliability. High error correction is selected automatically.</p>
+                  <button id="btnRemoveLogo" class="text-xs font-semibold mt-2 hidden" style="color:var(--danger);background:none;border:0;cursor:pointer;padding:6px 0;min-height:32px;">Remove logo</button>
+                </div>
+              </details>
+
+              <div class="mt-4">
+                <button id="btnResetCustom" class="btn-cute btn-ghost-cute w-full" style="font-size:0.8125rem;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9"/><path d="M3 3v6h6"/></svg>
+                  Reset design
+                </button>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- RIGHT: Borderless live preview -->
+      <div class="lg:col-span-2">
+        <div class="live-preview-col lg:sticky lg:top-24">
+          <div class="flex items-center justify-between gap-3 mb-4">
+            <p class="text-sm font-semibold" style="color: var(--ink);margin:0;">Live preview</p>
+            <span id="previewStatus" class="preview-status" role="status" aria-live="polite">
+              <span class="status-dot"></span>
+              <span class="status-text">Waiting for content</span>
+            </span>
+          </div>
+
+          <div class="qr-preview-wrap" id="qrPreview"></div>
+
+          <div class="live-preview-divider"></div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <button id="btnDownloadPng" class="btn-cute btn-primary-cute" disabled style="font-size: 0.8125rem; padding: 10px 16px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              PNG
+            </button>
+            <button id="btnDownloadSvg" class="btn-cute btn-secondary-cute" disabled style="font-size: 0.8125rem; padding: 10px 16px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              SVG
+            </button>
+            <button id="btnCopy" class="btn-cute btn-ghost-cute col-span-2" style="font-size: 0.8125rem; padding: 10px 16px;" disabled>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              Copy encoded content
+            </button>
+          </div>
+
+          <p id="scanWarning" class="hidden text-xs mt-3" style="color: var(--warning); background: #fffbeb; padding: 10px 12px; border-radius: 10px; line-height: 1.45;" role="status">
+            ⚠ Center artwork, a logo, low contrast, or inverted colors can affect scanning. Scan-test before printing or sharing.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       WHY CUTEQR — collapsible accordion
+       ============================================================ -->
+  <section class="container-cute py-3 sm:py-5" aria-labelledby="features-title">
+    <details id="features" class="section-accordion">
+      <summary>
+        <span class="accordion-head-text">
+          <span class="section-kicker">Why CuteQR</span>
+          <span class="accordion-title" id="features-title">Everything you need. Nothing you don't.</span>
+          <span class="accordion-hint">Six reasons to use CuteQR — tap to expand</span>
+        </span>
+        <span class="chevron-wrap" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </span>
+      </summary>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <p class="text-sm leading-relaxed mb-5" style="color: var(--ink-soft); max-width: 640px;">
+            A focused QR generator that runs entirely in your browser — no accounts, no uploads, no clutter.
+            Just clean codes you can download and use right away.
+          </p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+            <article class="feature-card p-5">
+              <div class="icon-chip mb-3" style="background: var(--accent-soft);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6554c0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h8l-1 8 10-12h-8l1-8z"/></svg>
+              </div>
+              <h3 class="text-sm font-semibold mb-1" style="color: var(--ink);">Instant generation</h3>
+              <p class="text-xs leading-relaxed" style="color: var(--ink-soft);">
+                Codes render immediately in the live preview, so you can iterate on content and design in seconds instead of minutes.
+              </p>
+            </article>
+
+            <article class="feature-card p-5">
+              <div class="icon-chip mb-3" style="background: #fdf2f8;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#be185d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="10.5" r="2.5"/><circle cx="8.5" cy="7.5" r="2.5"/><circle cx="6.5" cy="12.5" r="2.5"/><path d="M12 2a10 10 0 1 0 10 10"/></svg>
+              </div>
+              <h3 class="text-sm font-semibold mb-1" style="color: var(--ink);">Design that matches you</h3>
+              <p class="text-xs leading-relaxed" style="color: var(--ink-soft);">
+                Color palettes, module shapes, corner styles, and small illustrated center artwork — enough control to fit a brand without a design tool.
+              </p>
+            </article>
+
+            <article class="feature-card p-5">
+              <div class="icon-chip mb-3" style="background: #f0fdfa;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0f766e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              </div>
+              <h3 class="text-sm font-semibold mb-1" style="color: var(--ink);">Crisp, real exports</h3>
+              <p class="text-xs leading-relaxed" style="color: var(--ink-soft);">
+                Download a PNG for screens or a genuine vector SVG for print, at up to 2048 px. No watermarks, no locked features.
+              </p>
+            </article>
+
+            <article class="feature-card p-5">
+              <div class="icon-chip mb-3" style="background: #fffbeb;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </div>
+              <h3 class="text-sm font-semibold mb-1" style="color: var(--ink);">Privacy-first by design</h3>
+              <p class="text-xs leading-relaxed" style="color: var(--ink-soft);">
+                Your content is encoded locally in your browser and is not intentionally sent to a CuteQR server. External libraries load from public CDNs, which may receive standard connection data.
+              </p>
+            </article>
+
+            <article class="feature-card p-5">
+              <div class="icon-chip mb-3" style="background: #eff6ff;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="23" y2="12"/><line x1="23" y1="8" x2="19" y2="12"/></svg>
+              </div>
+              <h3 class="text-sm font-semibold mb-1" style="color: var(--ink);">No account, ever</h3>
+              <p class="text-xs leading-relaxed" style="color: var(--ink-soft);">
+                No sign-up, no email address, no paywall. Open the page, create a code, and leave — nothing to cancel later.
+              </p>
+            </article>
+
+            <article class="feature-card p-5">
+              <div class="icon-chip mb-3" style="background: #f5f3ff;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6d28d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+              </div>
+              <h3 class="text-sm font-semibold mb-1" style="color: var(--ink);">Five content types</h3>
+              <p class="text-xs leading-relaxed" style="color: var(--ink-soft);">
+                Website links, plain text, Wi-Fi credentials, pre-filled email drafts, and phone numbers — each formatted correctly for scanners.
+              </p>
+            </article>
+
+          </div>
+
+          <div class="trust-strip">
+            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Runs in your browser</span>
+            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Free forever</span>
+            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> No watermarks</span>
+            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Vector SVG export</span>
+            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Works on mobile</span>
+          </div>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============================================================
+       HOW TO CREATE AND USE A QR CODE — collapsible accordion
+       ============================================================ -->
+  <section class="container-cute py-3 sm:py-5" aria-labelledby="how-to-title">
+    <details id="how-to" class="section-accordion">
+      <summary>
+        <span class="accordion-head-text">
+          <span class="section-kicker">Step by step</span>
+          <span class="accordion-title" id="how-to-title">How to create and use a QR code</span>
+          <span class="accordion-hint">Four short steps from idea to print-ready code</span>
+        </span>
+        <span class="chevron-wrap" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </span>
+      </summary>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <ol class="howto-grid">
+            <li class="howto-step">
+              <span class="step-badge" aria-hidden="true">1</span>
+              <h3>Pick your content type</h3>
+              <p>Choose a website link, plain text, a Wi-Fi network, an email address, or a phone number. Each type builds a slightly different payload, so pick the one that matches what you want a scan to actually do.</p>
+            </li>
+            <li class="howto-step">
+              <span class="step-badge" aria-hidden="true">2</span>
+              <h3>Enter the details carefully</h3>
+              <p>Type the information exactly as it should behave. A typo in a URL or a Wi-Fi password gets baked into the code, and every scanner will faithfully reproduce the mistake.</p>
+            </li>
+            <li class="howto-step">
+              <span class="step-badge" aria-hidden="true">3</span>
+              <h3>Customize the design</h3>
+              <p>Adjust colors, module shapes, and optional center artwork. Keep strong contrast between the pattern and the background, and always leave a clear quiet zone around the edges.</p>
+            </li>
+            <li class="howto-step">
+              <span class="step-badge" aria-hidden="true">4</span>
+              <h3>Download and scan-test</h3>
+              <p>Export a PNG for screens or an SVG for print. Before publishing, scan the file with at least two different phones to confirm it resolves correctly at a realistic distance.</p>
+            </li>
+          </ol>
+
+          <div class="callout callout-warning" role="note">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <div>
+              <strong>Tips for reliable scanning.</strong> Use a high-contrast palette (dark pattern on a light background), size the code for its viewing distance, and keep content short — more characters produce a denser pattern that older cameras struggle to read. Avoid covering the three corner squares with artwork or a logo.
+            </div>
+          </div>
+
+          <div class="callout callout-info" role="note">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5545ad" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            <div>
+              <strong>Privacy reminder.</strong> A QR code displays whatever you encode. Avoid putting passwords, private contact details, or other sensitive information into a code you plan to print in public or share widely.
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- Footer -->
+  <footer style="border-top: 1px solid var(--border); background: #fff;">
+    <div class="container-cute py-8 sm:py-10">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+        <div>
+          <div class="flex items-center gap-2.5">
+            <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg" style="background: var(--accent-soft);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6554c0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="3" height="3" rx="0.5"/><rect x="18" y="18" width="3" height="3" rx="0.5"/></svg>
+            </span>
+            <span class="text-base font-bold" style="color: var(--ink);">CuteQR</span>
+          </div>
+          <p class="text-xs mt-2" style="color: var(--ink-mute);">Beautiful QR codes, made simple.</p>
+        </div>
+        <div class="footer-links">
+          <a href="#features">Features</a>
+          <a href="decode.html">Decode QR</a>
+          <a href="#how-to">Guide</a>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+          <a href="privacy-policy.html">Privacy Policy</a>
+          <a href="cookie-policy.html">Cookie Policy</a>
+          <a href="terms.html">Terms of Use</a>
+          <a href="disclaimer.html">Disclaimer</a>
+        </div>
+      </div>
+      <div class="mt-6 pt-4 text-xs" style="border-top: 1px solid var(--border); color: var(--ink-mute);">
+        © 2026 CuteQR. All rights reserved. QR content is processed in your browser; external libraries may receive standard connection data.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast -->
+  <div id="toast" class="toast-cute" role="status" aria-live="polite"></div>
+
+  <script src="assets/js/app.js" defer></script>
+
+</body>
+</html>
